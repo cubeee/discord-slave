@@ -10,4 +10,4 @@ RUN gradle jar
 FROM openjdk:8-jre-alpine
 WORKDIR /discord-slave/
 COPY --from=BUILD_IMAGE /home/gradle/project/build/libs/discord-slave.jar .
-CMD ["java", "-jar", "slave.jar"]
+CMD ["java", "-jar", "discord-slave.jar"]
