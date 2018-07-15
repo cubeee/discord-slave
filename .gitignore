@@ -1,0 +1,7 @@
+.*
+*.sqlite
+build/
+out/
+build.sh
+
+!.gitignore
