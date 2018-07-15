@@ -1,13 +1,16 @@
 package com.x7ff.discord.slave.command
 
+import net.dv8tion.jda.core.Permission
+
 enum class Command(
     val action: CommandAction,
+    val requiredPermissions: List<Permission>,
     val trigger: String,
     vararg val triggers: String
 ) {
-    ADD_ROLE(AddRoleCommandAction(), "addrole"),
-    REMOVE_ROLE(RemoveRoleCommandAction(), "removerole"),
-    ROLE_LIST(RoleListCommandAction(), "roles");
+    ADD_ROLE(AddRoleCommandAction(), listOf(Permission.ADMINISTRATOR), "addrole"),
+    REMOVE_ROLE(RemoveRoleCommandAction(), listOf(Permission.ADMINISTRATOR),"removerole"),
+    ROLE_LIST(RoleListCommandAction(), listOf(Permission.ADMINISTRATOR),"roles");
 
     private lateinit var allTriggers: List<String>
 

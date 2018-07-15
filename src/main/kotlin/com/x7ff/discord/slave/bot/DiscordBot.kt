@@ -2,6 +2,7 @@ package com.x7ff.discord.slave.bot
 
 import com.x7ff.discord.slave.command.Command
 import net.dv8tion.jda.core.JDA
+import net.dv8tion.jda.core.Permission
 import net.dv8tion.jda.core.entities.ChannelType
 import net.dv8tion.jda.core.entities.Member
 import net.dv8tion.jda.core.entities.Message
@@ -49,7 +50,18 @@ class DiscordBot(
 
     private fun handleCommand(trigger: String, member: Member, argumentPart: String, message: Message) {
         val command = Command.getCommand(trigger)
-        command?.action?.handleCommand(jda, argumentPart, message, member)
+        command?.let {
+            if (!memberHasPermissions(member, command.requiredPermissions)) {
+                return
+            }
+            command.action.handleCommand(jda, argumentPart, message, member)
+        }
+    }
+
+    private fun memberHasPermissions(member: Member, permissions: List<Permission>): Boolean {
+        return member.roles
+            .flatMap { role -> role.permissions }
+            .containsAll(permissions)
     }
 
 }
