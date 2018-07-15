@@ -5,6 +5,7 @@ import com.x7ff.discord.slave.model.AssignableRole
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.entities.Member
 import net.dv8tion.jda.core.entities.Message
+import net.dv8tion.jda.core.utils.PermissionUtil
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class AddRoleCommandAction: CommandAction() {
@@ -23,6 +24,11 @@ class AddRoleCommandAction: CommandAction() {
         val role = parts[1].toMentionableRole(jda)
         if (role == null) {
             message.reply("Invalid role entered, roles have to be @mentioned") // TODO: i18n
+            return
+        }
+
+        if (!PermissionUtil.canInteract(message.guild.selfMember, role)) {
+            message.reply("Entered role is above the bot's role and cannot be assigned to members")
             return
         }
 
